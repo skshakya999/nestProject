@@ -12,7 +12,7 @@ export class User {
   email: string;
 
   @Prop()
-  mobile:number;
+  mobile:string;
 
 }
 

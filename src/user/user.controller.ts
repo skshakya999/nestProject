@@ -7,12 +7,14 @@ import {
     Param,
     Post,
     Res,
-
+    Put
 } from '@nestjs/common';
 import { response } from 'express';
 import { CreateUserDto } from './dto/user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 //import { UpdateTodoDto } from './dto/update-todo.dto';
 import { UserService } from './user.service';
+import { resourceLimits } from 'worker_threads';
 
 @Controller('user')
 export class UserController {
@@ -37,6 +39,14 @@ export class UserController {
     async getOne(@Body() findUser: CreateUserDto) {
       return await this.service.findOne(findUser);
     }
+
+    @Put("update")
+    async updateUser(@Res() res,@Body() dataToUpdate: UpdateUserDto){
+
+    const yupdate = await this.service.updateUser(dataToUpdate);
+    return res.status(HttpStatus.OK).json(yupdate);
+    }
+
 
     // @Delete(':id')
     // async delete(@Param('id') id: string) {
