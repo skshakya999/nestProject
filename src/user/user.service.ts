@@ -42,8 +42,6 @@ export class UserService {
   }
 
   async userLogin(loginUser:LoginUserDto){
-
-    
     const log =  await this.model.findOne(loginUser)
     const paylod = {userId : log._id}
     const token = this.jwt.sign(paylod,{secret:"mykey"})

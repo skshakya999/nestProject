@@ -16,7 +16,9 @@ import { LoginUserDto } from './dto/login-user.dto';
 //import { UpdateTodoDto } from './dto/update-todo.dto';
 import { UserService } from './user.service';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { UploadedFile, UseInterceptors } from '@nestjs/common';
+import { UploadedFiles, UseInterceptors } from '@nestjs/common';
+import { diskStorage } from 'multer';
+import { Helper } from 'src/helper/helper';
 
 
 @Controller('user')
@@ -34,8 +36,8 @@ export class UserController {
     // }
 
     @Post("signup")
-    @UseInterceptors(FileInterceptor('file'))
-    async create(@Res() response,@Body() createuserDto: CreateUserDto,@UploadedFile() file: Express.Multer.File) {
+    @UseInterceptors(FileInterceptor('file',{storage: diskStorage({destination:Helper.destinationPath, filename:Helper.customFileName}),}))
+    async create(@Res() response,@Body() createuserDto: CreateUserDto,@UploadedFiles() file: Express.Multer.File) {
         const newUser =await this.service.create(createuserDto);
         return response.status(HttpStatus.CREATED).json(newUser)   }
 
