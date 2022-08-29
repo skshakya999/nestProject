@@ -4,20 +4,26 @@ import { Model } from 'mongoose';
 import {CreateUserDto} from './dto/user.dto'
 import {UpdateUserDto} from './dto/update-user.dto'
 import { User, UserDocument } from './schemas/user.schema';
+import { LoginUserDto } from './dto/login-user.dto';
+
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class UserService {
-  constructor(@InjectModel(User.name) private readonly model: Model<UserDocument>) {}
+  constructor(@InjectModel(User.name) private readonly model: Model<UserDocument>,
+   private jwt :JwtService ) {}
 
   async create(createUserDto:CreateUserDto) {
     const userAlreadyExist = await this.model.findOne({name:createUserDto.name})
     if(!userAlreadyExist)
     {
-        const newUser =  new this.model(createUserDto).save();
+        const newUser = await new this.model(createUserDto).save();
+        
     return {
         success:true,
         message:"User created Successfully",
         newUser
+     
     }}
     else{
         return{
@@ -35,14 +41,23 @@ export class UserService {
     return await this.model.findOne(findUser);
   }
 
+  async userLogin(loginUser:LoginUserDto){
+
+    
+    const log =  await this.model.findOne(loginUser)
+    const paylod = {userId : log._id}
+    const token = this.jwt.sign(paylod,{secret:"mykey"})
+    return token
+  }
+
   async updateUser(update:UpdateUserDto) {
-    console.log("number",update);
+ 
     
     //const user = await this.model.findOne({mobile:update.mobile});
-    const updateNumber = await this.model.findOneAndUpdate({mobile:8533943758},{$set:{mobile:9870645541}},{new:true})
+    const updateNumber = await this.model.findOneAndUpdate({mobile:update.mobile},{$set:{mobile:update.newMobile}},{new:true})
     
     // const user = await this.model.findOne({mobile:update.newMobile});
-    console.log("user",update.mobile);
+   
     
     return updateNumber
 }

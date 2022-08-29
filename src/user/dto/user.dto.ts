@@ -8,6 +8,5 @@ export class CreateUserDto {
     @IsEmail()
     email: string;
     @IsNotEmpty()
-    @IsPhoneNumber("IN")
     mobile: string;
  }

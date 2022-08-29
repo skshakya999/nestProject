@@ -1,10 +1,11 @@
 import { IsNotEmpty, IsPhoneNumber} from "class-validator"
 
-export class UpdateUserDto {
-   
+export class LoginUserDto {
+    @IsNotEmpty()
+    email:string
+ 
     @IsNotEmpty()
     mobile: string;
-    @IsNotEmpty()
-    newMobile: string;
+  
     
  }

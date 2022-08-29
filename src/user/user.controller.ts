@@ -12,9 +12,12 @@ import {
 import { response } from 'express';
 import { CreateUserDto } from './dto/user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { LoginUserDto } from './dto/login-user.dto';
 //import { UpdateTodoDto } from './dto/update-todo.dto';
 import { UserService } from './user.service';
-import { resourceLimits } from 'worker_threads';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { UploadedFile, UseInterceptors } from '@nestjs/common';
+
 
 @Controller('user')
 export class UserController {
@@ -31,7 +34,8 @@ export class UserController {
     // }
 
     @Post("signup")
-    async create(@Res() response,@Body() createuserDto: CreateUserDto) {
+    @UseInterceptors(FileInterceptor('file'))
+    async create(@Res() response,@Body() createuserDto: CreateUserDto,@UploadedFile() file: Express.Multer.File) {
         const newUser =await this.service.create(createuserDto);
         return response.status(HttpStatus.CREATED).json(newUser)   }
 
@@ -40,6 +44,11 @@ export class UserController {
       return await this.service.findOne(findUser);
     }
 
+    @Post("login")
+    async userLogin(@Res() res, @Body() loginUser : LoginUserDto){
+        const userLoggedIn = await this.service.userLogin(loginUser)
+        return res.status(HttpStatus.OK).json(userLoggedIn)
+    }
     @Put("update")
     async updateUser(@Res() res,@Body() dataToUpdate: UpdateUserDto){
 
