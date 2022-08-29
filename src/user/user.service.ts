@@ -5,7 +5,7 @@ import {CreateUserDto} from './dto/user.dto'
 import {UpdateUserDto} from './dto/update-user.dto'
 import { User, UserDocument } from './schemas/user.schema';
 import { LoginUserDto } from './dto/login-user.dto';
-
+import { Helper } from 'src/helper/helper';
 import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
@@ -17,6 +17,7 @@ export class UserService {
     const userAlreadyExist = await this.model.findOne({name:createUserDto.name})
     if(!userAlreadyExist)
     {
+      
         const newUser = await new this.model(createUserDto).save();
         
     return {

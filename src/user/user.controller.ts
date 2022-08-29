@@ -13,12 +13,12 @@ import { response } from 'express';
 import { CreateUserDto } from './dto/user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
-//import { UpdateTodoDto } from './dto/update-todo.dto';
 import { UserService } from './user.service';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { UploadedFiles, UseInterceptors } from '@nestjs/common';
+import { UploadedFile, UseInterceptors } from '@nestjs/common';
 import { diskStorage } from 'multer';
 import { Helper } from 'src/helper/helper';
+
 
 
 @Controller('user')
@@ -27,19 +27,16 @@ export class UserController {
 
     
 
-    // async findOne(mobile: number): Promise<Todo[mobile]> {
-    //     return await this.model.findOne(mobile).exec();
-    //   }
-    // @Get()
-    // async index() {
-    //     return await this.service.find();
-    // }
-
     @Post("signup")
-    @UseInterceptors(FileInterceptor('file',{storage: diskStorage({destination:Helper.destinationPath, filename:Helper.customFileName}),}))
-    async create(@Res() response,@Body() createuserDto: CreateUserDto,@UploadedFiles() file: Express.Multer.File) {
+    @UseInterceptors(FileInterceptor('file',{storage: diskStorage({filename:Helper.customFileName}),}))
+    async create(@Res() response,@Body() createuserDto: CreateUserDto,@UploadedFile() file: Express.Multer.File) {
+        console.log(file)
+        console.log(file.path)
+        createuserDto.profilePic = file.path
+        console.log(createuserDto.profilePic)
         const newUser =await this.service.create(createuserDto);
-        return response.status(HttpStatus.CREATED).json(newUser)   }
+        
+        return response.status(HttpStatus.CREATED).json( { newUser})   }
 
     @Get()
     async getOne(@Body() findUser: CreateUserDto) {
