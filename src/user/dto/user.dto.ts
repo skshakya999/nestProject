@@ -9,6 +9,5 @@ export class CreateUserDto {
     email: string;
     @IsNotEmpty()
     mobile: string;
-
     profilePic:string
  }
