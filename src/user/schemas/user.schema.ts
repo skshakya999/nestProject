@@ -10,9 +10,14 @@ export class User {
 
   @Prop()
   email: string;
+  @Prop()
+  password:string
 
   @Prop()
   mobile:string;
+
+  @Prop({type:Object})
+  address:{};
 
   @Prop({type:Object})
   profilePic:{};

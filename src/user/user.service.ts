@@ -18,7 +18,18 @@ export class UserService {
     const userAlreadyExist = await this.usermodel.findOne({ name: createUserDto.name })
     if (!userAlreadyExist) {
       if (!file) {
-        const newUser = await new this.usermodel(createUserDto).save();
+        const add = {
+          dist:createUserDto.dist,
+          state: createUserDto.state,
+          pincode: createUserDto.pincode
+        }
+        const newUser = await new this.usermodel({
+          name: createUserDto.name,
+          email: createUserDto.email,
+          password: createUserDto.password,
+          mobile: createUserDto.mobile,
+          address:add
+        }).save();
         return {
           success: true,
           message: "User created Successfully",
