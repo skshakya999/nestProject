@@ -14,8 +14,8 @@ export class User {
   @Prop()
   mobile:string;
 
-  @Prop()
-  prifilePic:string;
+  @Prop({type:Object})
+  profilePic:{};
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

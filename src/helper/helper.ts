@@ -1,19 +1,29 @@
 export class Helper {
-    static customFileName(req, file, cb) {
-      //const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
-      let fileExtension = "";
-      if(file.mimetype.indexOf("jpeg") > -1){
-          fileExtension = "jpg"
-      }else if(file.mimetype.indexOf("png") > -1){
-          fileExtension = "png";
-      }
-      const originalName = file.originalname.split(".")[0];
-      cb(null, originalName + '-' + req.body.name+"."+fileExtension);
-    }
-   
-    static destinationPath(req, file, cb) {
-      cb(null, './img/')
-    }
-     
 
+  static customfileName(req,file,cb){
+    let filename = ""
+    filename = file.originalname
+    console.log(filename)
+    console.log(file);
+    
+    cb(null,filename)
   }
+  static customDest(req,file,cb){
+   
+    cb(null,"/img")
+  }
+
+
+  static validFile(req, file, cb) {
+    if (file.mimetype.indexOf("jpg") > -1 || file.mimetype.indexOf("jpeg") > -1 || file.mimetype.indexOf("png") > -1) {
+      
+      cb(null, true);
+    } else {
+      cb(null, false);
+      req.fileValidationError = "Only image files are allowed"
+    }
+  }
+
+
+
+}
