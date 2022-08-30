@@ -20,6 +20,7 @@ import { UploadedFile, UseInterceptors } from '@nestjs/common';
 import { diskStorage } from 'multer';
 import { Helper } from 'src/helper/helper';
 import { UserToken } from 'src/middleware/verifyToken';
+import { encodePass } from 'src/hashPassword/hashPassword';
 
 
 
@@ -50,8 +51,10 @@ export class UserController {
             message : "only image files are allowed"
         })
       }
-   
-        const newUser = await this.service.create(createuserDto,file);
+        const password = encodePass(createuserDto.pass)
+        console.log(password);
+        
+        const newUser = await this.service.create(createuserDto,password,file);
 
         return response.status(HttpStatus.CREATED).json({ newUser })
     }

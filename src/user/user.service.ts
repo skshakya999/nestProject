@@ -13,7 +13,7 @@ export class UserService {
   constructor(@InjectModel(User.name) private readonly usermodel: Model<UserDocument>,
     private jwt: JwtService) { }
 
-  async create(createUserDto: CreateUserDto, file) {
+  async create(createUserDto: CreateUserDto,password,file) {
 
     const userAlreadyExist = await this.usermodel.findOne({ name: createUserDto.name })
     if (!userAlreadyExist) {
@@ -26,7 +26,7 @@ export class UserService {
         const newUser = await new this.usermodel({
           name: createUserDto.name,
           email: createUserDto.email,
-          password: createUserDto.password,
+          password: password,
           mobile: createUserDto.mobile,
           address:add
         }).save();
@@ -45,6 +45,7 @@ export class UserService {
         const newUser = await new this.usermodel({
           name: createUserDto.name,
           email: createUserDto.email,
+          password: password,
           mobile: createUserDto.mobile,
           profilePic: pic
         }).save();
