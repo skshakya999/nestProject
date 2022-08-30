@@ -22,7 +22,7 @@ export class UserMiddleware implements NestMiddleware {
           const verifyTok = await this.jwtService.verify(Token,{secret:process.env.SECRETE_KEY})
           
           if (verifyTok) {
-            console.log(verifyTok);
+            //console.log(verifyTok);
             next()
 
           } else {

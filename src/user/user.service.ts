@@ -89,7 +89,8 @@ export class UserService {
     return updateNumber
   }
 
-  //   async findAll(): Promise<Todo[]> {
-  //     return await this.model.find().exec();
-  //   }
+  async deleteUser(id){
+    const deletedUser = await this.usermodel.deleteOne({_id:id})
+    return deletedUser
+  }
 }

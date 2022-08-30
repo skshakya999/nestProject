@@ -3,9 +3,7 @@ export class Helper {
   static customfileName(req,file,cb){
     let filename = ""
     filename = file.originalname
-    console.log(filename)
-    console.log(file);
-    
+        
     cb(null,filename)
   }
   static customDest(req,file,cb){

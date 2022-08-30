@@ -16,7 +16,7 @@ export const UserToken = createParamDecorator(
         request.header('authorization').split(' ')[1],
       );
       const userId = user['userId'];
-      console.log(userId);
+      //console.log("user4 ids",userId);
       
       return userId;
     }
